@@ -3,8 +3,6 @@ import {
   IsEmail,
   MinLength,
   Matches,
-  Validate,
-  IsNumber,
 } from 'class-validator';
 import { Match } from '../decorators/register.dto';
 export class CreateAccountDto {
@@ -31,7 +29,7 @@ export class CreateAccountDto {
   @IsNotEmpty()
   @MinLength(8)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
-    message: 'Password too weak',
+    message: 'Mật khẩu quá yếu, hãy nhập lại !',
   })
   password: string;
 

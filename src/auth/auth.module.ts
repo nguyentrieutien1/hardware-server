@@ -8,11 +8,14 @@ import { jwtConstants } from './constants';
 import { LocalStrategy } from './local.strategy';
 
 @Module({
-  imports: [PrismaModule, PassportModule,
+  imports: [
+    PrismaModule,
+    PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
-    }),],
+      signOptions: { expiresIn: '7d' },
+    }),
+  ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy],
 })

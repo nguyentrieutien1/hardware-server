@@ -1,30 +1,36 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Request } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-auth.dto';
 import { PrismaService } from 'prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from './constants';
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
   ) {}
-  async create(createAccountDto: CreateAccountDto) {
-    const { email, password } = createAccountDto;
+  async register(createAccountDto: CreateAccountDto) {
+    try {
+      const { email, password } = createAccountDto;
 
-    const accountExists = await this.prisma.account.findFirst({
-      where: {
-        email,
-      },
-    });
-    if (accountExists) {
-      throw new BadRequestException('Tài khoản đã tồn tại');
-    }
-    const saltOrRounds = 10;
-    const hashPassword = await bcrypt.hash(password, saltOrRounds);
-    createAccountDto.password = hashPassword;
-    delete createAccountDto.confirmPassword;
-    return this.prisma.account.create({ data: createAccountDto , include: {role: true}});
+      const accountExists = await this.prisma.account.findFirst({
+        where: {
+          email,
+        },
+      });
+      if (accountExists) {
+        throw new BadRequestException('Tài khoản đã tồn tại');
+      }
+      const saltOrRounds = 10;
+      const hashPassword = await bcrypt.hash(password, saltOrRounds);
+      createAccountDto.password = hashPassword;
+      delete createAccountDto.confirmPassword;
+      return this.prisma.account.create({
+        data: createAccountDto,
+        include: { role: true },
+      });
+    } catch (error) {}
   }
 
   async login(id: number, email: string) {
@@ -46,5 +52,22 @@ export class AuthService {
     }
 
     return null;
+  }
+  async checkIsLogin(req: Request): Promise<any> {
+    try {
+      if (!req.headers) {
+        throw new BadRequestException('Cookie not found');
+      }
+      console.log( req.headers);
+      const access_token = req.headers['authorization'].split(' ')[1];
+      const decodedToken = this.jwtService.verify(access_token, {
+        secret: jwtConstants.secret,
+      });
+      const { id } = decodedToken;
+      return await this.prisma.account.findUnique({ where: { id } });
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException('Cookie has expired');
+    }
   }
 }

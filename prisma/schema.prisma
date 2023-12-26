@@ -10,8 +10,8 @@ datasource db {
 model Account {
   id        Int      @id @default(autoincrement())
   fullName  String   @db.VarChar(255)
-  createdAt DateTime @default(now()) 
-  updateAt  DateTime @default(now()) 
+  createdAt DateTime @default(now())
+  updateAt  DateTime @default(now())
   birthday  String
   email     String
   address   String
@@ -27,9 +27,26 @@ model Account {
 model Role {
   id        Int       @id @default(autoincrement())
   name      String?
-  createdAt DateTime  @default(now()) 
-  updateAt  DateTime  @default(now()) 
+  createdAt DateTime  @default(now())
+  updateAt  DateTime  @default(now())
   account   Account[]
 
   @@map(name: "role")
+}
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String?
+  description String?
+  price       Int
+  images      Image[]
+
+  @@map(name: "product")
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url      String?
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
 }
