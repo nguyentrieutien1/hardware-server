@@ -20,6 +20,7 @@ model Account {
   password  String
   roleId    Int      @default(3)
   role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cart      Cart[]
 
   @@map(name: "account")
 }
@@ -40,13 +41,27 @@ model Product {
   description String?
   price       Int
   images      Image[]
+  cart        Cart[]
 
   @@map(name: "product")
 }
 
 model Image {
   id        Int      @id @default(autoincrement())
-  url      String?
+  url       String?
   Product   Product? @relation(fields: [productId], references: [id])
   productId Int?
+
+  @@map(name: "image")
+}
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  quantity  Int?
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  account   Account? @relation(fields: [accountId], references: [id])
+  accountId Int?
+
+  @@map(name: "cart")
 }

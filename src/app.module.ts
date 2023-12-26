@@ -3,15 +3,22 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from 'prisma/prisma.module';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { GlobalExceptionFilter } from './exceptions/global-exception.filter';
+import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/roles.guard';
+import { ProductModule } from './product/product.module';
+import { UploadModule } from './upload/upload.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule],
+  imports: [
+    AuthModule,
+    PrismaModule,
+    ProductModule,
+    UploadModule,
+    CartModule,
+  ],
   controllers: [AppController],
   providers: [
-   
     AppService,
     {
       provide: APP_GUARD,

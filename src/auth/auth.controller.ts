@@ -2,6 +2,7 @@ import { Controller,  Post, Body, UseGuards, Request, Get, } from '@nestjs/commo
 import { AuthService } from './auth.service';
 import { CreateAccountDto } from './dto/create-auth.dto';
 import { LocalAuthGuard } from './local-auth.guard';
+import { AuthGuard } from './auth.guard';
 @Controller('auth')
 // @Roles(['SUPER_ADMIN', ])
 export class AuthController {
@@ -18,7 +19,7 @@ export class AuthController {
     return await this.authService.login(req.user.id, accountLogin.email)
   }
 
-  // @UseGuards(LocalAuthGuard)
+  @UseGuards(AuthGuard)
   @Get('/check-is-login')
   async checkIsLogin(@Request() req: Request) {
     return await this.authService.checkIsLogin(req)

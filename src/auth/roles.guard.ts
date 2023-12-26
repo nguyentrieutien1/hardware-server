@@ -17,8 +17,6 @@ export class RolesGuard implements CanActivate {
     if(!account) {
       return false
     }
-    console.log(account.role.name);
-    
     return roles.includes(account.role.name)
     
   }

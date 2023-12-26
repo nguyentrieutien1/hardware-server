@@ -30,7 +30,10 @@ export class AuthService {
         data: createAccountDto,
         include: { role: true },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
   async login(id: number, email: string) {
@@ -58,15 +61,23 @@ export class AuthService {
       if (!req.headers) {
         throw new BadRequestException('Cookie not found');
       }
-      console.log( req.headers);
       const access_token = req.headers['authorization'].split(' ')[1];
       const decodedToken = this.jwtService.verify(access_token, {
         secret: jwtConstants.secret,
       });
       const { id } = decodedToken;
-      return await this.prisma.account.findUnique({ where: { id } });
+      return await this.prisma.account.findUnique({ where: { id }, include: {
+        cart: {
+          include: {
+            product: {
+              include: {
+                images: true
+              }
+            }
+          },
+        }
+      } });
     } catch (error) {
-      console.log(error);
       throw new BadRequestException('Cookie has expired');
     }
   }
