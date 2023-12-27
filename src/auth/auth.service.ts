@@ -88,6 +88,7 @@ export class AuthService {
               statusId: 1
             },
             include: {
+              status: true,
               cart: {
                 include: {
                   product: {
@@ -95,6 +96,7 @@ export class AuthService {
                       images: true,
                     },
                   },
+                  status: true
                 },
               },
               account: true
