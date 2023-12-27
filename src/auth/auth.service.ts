@@ -32,7 +32,6 @@ export class AuthService {
       });
     } catch (error) {
       console.log(error);
-      
     }
   }
 
@@ -66,17 +65,46 @@ export class AuthService {
         secret: jwtConstants.secret,
       });
       const { id } = decodedToken;
-      return await this.prisma.account.findUnique({ where: { id }, include: {
-        cart: {
-          include: {
-            product: {
-              include: {
-                images: true
-              }
-            }
+      return await this.prisma.account.findUnique({
+        where: { id },
+        include: {
+          cart: {
+            where: {
+              statusId: 4
+            },
+            include: {
+              product: {
+                include: {
+                  images: true,
+                },
+              },
+            },
+            orderBy: {
+              id: 'desc',
+            },
           },
-        }
-      } });
+          order: {
+            where: {
+              statusId: 1
+            },
+            include: {
+              cart: {
+                include: {
+                  product: {
+                    include: {
+                      images: true,
+                    },
+                  },
+                },
+              },
+              account: true
+            },
+            orderBy: {
+              id: 'desc',
+            },
+          },
+        },
+      });
     } catch (error) {
       throw new BadRequestException('Cookie has expired');
     }
