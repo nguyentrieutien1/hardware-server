@@ -43,6 +43,7 @@ model Product {
   price       Int
   images      Image[]
   cart        Cart[]
+  stock       Int?
   createdAt   DateTime @default(now())
   updateAt    DateTime @default(now())
 
@@ -72,7 +73,6 @@ model Cart {
   order     Order[]
   status    Status?  @relation(fields: [statusId], references: [id])
   statusId  Int?     @default(4)
-
   @@map(name: "cart")
 }
 

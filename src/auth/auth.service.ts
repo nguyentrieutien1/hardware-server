@@ -68,6 +68,7 @@ export class AuthService {
       return await this.prisma.account.findUnique({
         where: { id },
         include: {
+          role: true,
           cart: {
             where: {
               statusId: 4
