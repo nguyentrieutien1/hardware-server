@@ -19,7 +19,7 @@ export class AuthController {
     return await this.authService.login(req.user.id, accountLogin.email)
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get('/check-is-login')
   async checkIsLogin(@Request() req: Request) {
     return await this.authService.checkIsLogin(req)

@@ -37,8 +37,10 @@ export class AuthService {
 
   async login(id: number, email: string) {
     const payload = { email, id };
+    const account = await this.prisma.account.findUnique({where: {id}, include: {role: true}})
     return {
       access_token: this.jwtService.sign(payload),
+      role: account.role
     };
   }
 

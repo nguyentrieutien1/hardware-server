@@ -16,7 +16,6 @@ export class UploadController {
 
   @Post()
   create(@Body() createUploadDto: CreateUploadDto[]) {
-    console.log(createUploadDto);
   }
 
   @Get()
