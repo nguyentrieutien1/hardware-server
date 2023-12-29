@@ -6,6 +6,7 @@ export class CreateProductDto {
     description: string;
     @IsNotEmpty()
     price: number;
+    stock: number;
     @IsNotEmpty()
     images?: object;
 }
