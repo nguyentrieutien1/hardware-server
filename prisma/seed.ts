@@ -6,10 +6,17 @@ async function createRoleData() {
   });
 }
 async function createRoleStatusData() {
-    return await prisma.status.createMany({
-      data: [{name: 'PENDING',}, {name: 'REJECT'}, {name: 'APPROVED'}]
-    });
-  }
+  return await prisma.status.createMany({
+    data: [
+      { name: 'PENDING' },
+      { name: 'REJECT' },
+      { name: 'APPROVED' },
+      { name: 'PRODUCT_IN_CART' },
+      { name: 'PRODUCT_ORDERED' },
+      { name: 'CANCEL_ORDER' },
+    ],
+  });
+}
 
-createRoleData()
-createRoleStatusData()
+createRoleData();
+createRoleStatusData();
