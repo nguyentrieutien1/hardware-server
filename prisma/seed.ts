@@ -8,12 +8,13 @@ async function createRoleData() {
 async function createRoleStatusData() {
   return await prisma.status.createMany({
     data: [
-      { name: 'PENDING' },
-      { name: 'REJECT' },
-      { name: 'APPROVED' },
+      { name: 'ORDER_PENDING' },
+      { name: 'ORDER_REJECT' },
+      { name: 'ORDER_APPROVED' },
       { name: 'PRODUCT_IN_CART' },
       { name: 'PRODUCT_ORDERED' },
-      { name: 'CANCEL_ORDER' },
+      { name: 'ORDER_CANCELED' },
+      { name: 'ORDER_ACCEPTED' },
     ],
   });
 }

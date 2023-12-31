@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { PrismaService } from 'prisma/prisma.service';
 @Injectable()
 export class CartService {
   constructor(private prismaService: PrismaService) {}
-  async create(createCartDto: any) {
+  async create(accountId, createCartDto: any) {
     try {
       const product = await this.prismaService.cart.findFirst({
         where: {
           productId: createCartDto.productId,
-          statusId: 4
+          statusId: 4,
+          accountId
+          
         },
       });
       if (product) {
@@ -22,11 +24,12 @@ export class CartService {
         }
       }
       return await this.prismaService.cart.create({
-        data: createCartDto,
+        data: {...createCartDto, accountId},
         include: { product: { include: { images: true } }, account: true },
       });
     } catch (error) {
-      console.log(error);
+      
+      throw new BadRequestException(error)
     }
   }
 
@@ -57,7 +60,7 @@ export class CartService {
     try {
       return this.prismaService.cart.delete({ where: { id } });
     } catch (error) {
-      console.log(error);
+        throw new BadRequestException(error)
     }
   }
 }

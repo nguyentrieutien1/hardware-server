@@ -10,8 +10,10 @@ export class CartController {
   
   @Post()
   @UseGuards(AuthGuard)
-  create(@Body() createCartDto: CreateCartDto) {
-    return this.cartService.create(createCartDto);
+  create(@Body() createCartDto: CreateCartDto, @Request() req) {
+    
+    
+    return this.cartService.create(req?.user?.id, createCartDto);
   }
   
   @Get()

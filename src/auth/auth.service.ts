@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, Request } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Request,
+} from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-auth.dto';
 import { PrismaService } from 'prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -20,27 +26,30 @@ export class AuthService {
         },
       });
       if (accountExists) {
-        throw new BadRequestException('Tài khoản đã tồn tại');
+        throw new HttpException('Tài khoản đã tồn tại', HttpStatus.CONFLICT);
       }
       const saltOrRounds = 10;
       const hashPassword = await bcrypt.hash(password, saltOrRounds);
       createAccountDto.password = hashPassword;
       delete createAccountDto.confirmPassword;
-      return this.prisma.account.create({
+      return await this.prisma.account.create({
         data: createAccountDto,
         include: { role: true },
       });
     } catch (error) {
-      console.log(error);
+      throw new BadRequestException(error);
     }
   }
 
   async login(id: number, email: string) {
     const payload = { email, id };
-    const account = await this.prisma.account.findUnique({where: {id}, include: {role: true}})
+    const account = await this.prisma.account.findUnique({
+      where: { id },
+      include: { role: true },
+    });
     return {
       access_token: this.jwtService.sign(payload),
-      role: account.role
+      role: account.role,
     };
   }
 
@@ -70,11 +79,11 @@ export class AuthService {
       return await this.prisma.account.findUnique({
         where: { id },
         include: {
-          image: true, 
+          image: true,
           role: true,
           cart: {
             where: {
-              statusId: 4
+              statusId: 4,
             },
             include: {
               product: {
@@ -89,7 +98,7 @@ export class AuthService {
           },
           order: {
             where: {
-              statusId: 1
+              statusId: 1,
             },
             include: {
               status: true,
@@ -100,10 +109,10 @@ export class AuthService {
                       images: true,
                     },
                   },
-                  status: true
+                  status: true,
                 },
               },
-              account: true
+              account: true,
             },
             orderBy: {
               id: 'desc',
