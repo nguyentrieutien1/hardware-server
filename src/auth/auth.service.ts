@@ -98,7 +98,11 @@ export class AuthService {
           },
           order: {
             where: {
-              statusId: 1,
+              OR: [
+                { statusId: 7 },
+                { statusId: 1 },
+                { statusId: 2 },
+              ]
             },
             include: {
               status: true,
