@@ -53,9 +53,22 @@ export class OrderService {
 
   async update(id: number, updateOrderDto: any) {
     try {
-      return this.prismaService.order.update({
+      return await this.prismaService.order.update({
         where: { id },
         data: { statusId: updateOrderDto?.statusId },
+        include: {
+          account: true, 
+          cart: {
+            include: {
+              product: {
+                include: {
+                  images: true
+                }
+              }
+            }
+          },
+          status: true
+        }
       });
     } catch (error) {
         console.log(error);
