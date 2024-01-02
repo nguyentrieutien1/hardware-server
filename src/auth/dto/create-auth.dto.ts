@@ -13,7 +13,7 @@ export class CreateAccountDto {
   fullName: string;
 
   @IsNotEmpty()
-  @IsEmail()
+  @IsEmail({}, {message: 'Email phải đúng định dạng.'})
   email: string;
 
   @IsNotEmpty()

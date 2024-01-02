@@ -18,5 +18,5 @@ async function createRoleStatusData() {
     ],
   });
 }
-
+createRoleData();
 createRoleStatusData();
