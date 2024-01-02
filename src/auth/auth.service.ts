@@ -48,7 +48,7 @@ export class AuthService {
       include: { role: true },
     });
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, {expiresIn: '1d', secret: jwtConstants.secret}),
       role: account.role,
     };
   }
@@ -125,6 +125,8 @@ export class AuthService {
         },
       });
     } catch (error) {
+      console.log(error);
+      
       throw new BadRequestException('Cookie has expired');
     }
   }
