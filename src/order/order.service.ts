@@ -4,7 +4,7 @@ import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class OrderService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService) { }
   async create(createOrderDto: any) {
     let transaction;
     try {
@@ -24,6 +24,7 @@ export class OrderService {
           }),
         ),
       ]);
+      return createOrderDto;
     } catch (error) {
       throw new BadRequestException(error);
     }
@@ -51,10 +52,16 @@ export class OrderService {
   }
 
   async update(id: number, updateOrderDto: any) {
-    return this.prismaService.order.update({
-      where: { id },
-      data: { statusId: updateOrderDto?.statusId },
-    });
+    try {
+      return this.prismaService.order.update({
+        where: { id },
+        data: { statusId: updateOrderDto?.statusId },
+      });
+    } catch (error) {
+        console.log(error);
+        
+      throw new BadRequestException(error);
+    }
   }
 
   remove(id: number) {

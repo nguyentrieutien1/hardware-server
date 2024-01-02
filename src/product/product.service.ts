@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from 'prisma/prisma.service';
 
@@ -30,6 +30,7 @@ export class ProductService {
       };
     } catch (error) {
       console.log(error);
+      throw new BadRequestException(error)
     }
   }
 
@@ -41,6 +42,7 @@ export class ProductService {
       });
     } catch (error) {
       console.log(error);
+      throw new BadRequestException(error)
     }
   }
 
@@ -81,6 +83,7 @@ export class ProductService {
       return await this.prismaService.product.delete({where: {id}})
     } catch (error) {
       console.log(error);
+      throw new BadRequestException(error)
       
     }
   }
