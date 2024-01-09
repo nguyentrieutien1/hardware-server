@@ -10,6 +10,7 @@ import { UploadModule } from './upload/upload.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { AccountModule } from './account/account.module';
+import { CategoriesModule } from './categories/categories.module';
 import session from 'express-session';
 
 @Module({
@@ -21,6 +22,7 @@ import session from 'express-session';
     CartModule,
     OrderModule,
     AccountModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [
