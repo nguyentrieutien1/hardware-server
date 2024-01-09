@@ -16,11 +16,11 @@ import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(private readonly orderService: OrderService) { }
 
   @Post()
-  @UseGuards(AuthGuard)
-  create(@Body() createOrderDto: CreateOrderDto[]) {
+  // @UseGuards(AuthGuard)
+  create(@Body() createOrderDto: any) {
     return this.orderService.create(createOrderDto);
   }
 

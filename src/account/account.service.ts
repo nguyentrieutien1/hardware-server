@@ -10,12 +10,16 @@ export class AccountService {
     const accountUpdated =  await this.prismaService.account.update({
       where: { id },
       data: updateAccountDto,
+      include: {
+        image: true
+      }
     });
     const image = await this.prismaService.image.upsert({
       where: { id },
       update: { url: images },
       create: { url: images, account: {connect: {id}} },
     });
+    accountUpdated.image =  image
     return accountUpdated;
   }
 }

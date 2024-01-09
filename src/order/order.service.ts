@@ -12,17 +12,6 @@ export class OrderService {
         this.prismaService.order.createMany({
           data: createOrderDto,
         }),
-        // Update những product trong cart đã được order (statusId = 5), còn những sản phẩm trong giỏ hàng chưa được order (statusId = 4);
-        ...createOrderDto.map((cart) =>
-          this.prismaService.cart.update({
-            where: {
-              id: cart.cartId,
-            },
-            data: {
-              statusId: 5,
-            },
-          }),
-        ),
       ]);
       return createOrderDto;
     } catch (error) {

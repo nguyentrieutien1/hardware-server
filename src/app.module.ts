@@ -10,6 +10,7 @@ import { UploadModule } from './upload/upload.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { AccountModule } from './account/account.module';
+import session from 'express-session';
 
 @Module({
   imports: [

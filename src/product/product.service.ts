@@ -4,7 +4,7 @@ import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class ProductService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService) { }
   async create(createProductDto: any) {
     try {
       const imagesList = createProductDto.images;
@@ -46,8 +46,17 @@ export class ProductService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+   try {
+    return await this.prismaService.product.findUnique({
+      where: { id }, include: {
+        images: true
+      }
+    })
+   } catch (error) {
+    throw new BadRequestException(error)
+    
+   }
   }
 
   async update(id: number, updateProductDto: any) {
@@ -78,13 +87,13 @@ export class ProductService {
     };
   }
 
- async  remove(id: number) {
+  async remove(id: number) {
     try {
-      return await this.prismaService.product.delete({where: {id}})
+      return await this.prismaService.product.delete({ where: { id } })
     } catch (error) {
       console.log(error);
       throw new BadRequestException(error)
-      
+
     }
   }
 }
