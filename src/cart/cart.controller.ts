@@ -9,8 +9,12 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
   
   @Post()
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   create(@Body() createCartDto: CreateCartDto, @Session() session, @Request() req) {
+    const ipAddress = req.connection.remoteAddress;
+    console.log(ipAddress);
+    return
+    
     try {
     return this.cartService.create(req?.user?.id, createCartDto);
     } catch (error) {

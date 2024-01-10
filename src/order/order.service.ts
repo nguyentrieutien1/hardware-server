@@ -25,6 +25,7 @@ export class OrderService {
         include: {
           account: true,
           status: true,
+          product: true,
           cart: { include: { product: true } },
         },
         orderBy: {

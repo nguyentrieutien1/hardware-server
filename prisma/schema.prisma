@@ -60,10 +60,11 @@ model Product {
   images       Image[]
   cart         Cart[]
   stock        Int?
-  categories   Categories? @relation(fields: [categoriesId], references: [id])
-  categoriesId Int?
   createdAt    DateTime    @default(now())
   updateAt     DateTime    @default(now())
+  categories   Categories? @relation(fields: [categoriesId], references: [id])
+  categoriesId Int?
+  Order        Order[]
 
   @@map(name: "product")
 }
@@ -100,6 +101,10 @@ model Order {
   address   String?
   note      String?
   type      String?
+  quantity  Int?
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
 
   @@map(name: "order")
 }

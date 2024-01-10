@@ -5,6 +5,8 @@ import { PrismaService } from 'prisma/prisma.service';
 export class CartService {
   constructor(private prismaService: PrismaService) {}
   async create(accountId, createCartDto: any) {
+    console.log(accountId);
+    
     try {
       const product = await this.prismaService.cart.findFirst({
         where: {
@@ -42,6 +44,7 @@ export class CartService {
   }
 
   update(id: number, updateCartDto: UpdateCartDto) {
+    
     try {
       return this.prismaService.cart.update({
         data: { quantity: updateCartDto.quantity },

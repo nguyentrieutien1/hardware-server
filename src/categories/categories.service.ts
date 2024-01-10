@@ -17,7 +17,11 @@ export class CategoriesService {
 
   async findAll() {
     try {
-      return await this.prismaService.categories.findMany({})
+      return await this.prismaService.categories.findMany({
+        orderBy: {
+          id: 'desc'
+        }
+      })
     } catch (error) {
 
       throw new BadRequestException(error)
