@@ -48,6 +48,7 @@ export class OrderService {
         data: { statusId: updateOrderDto?.statusId },
         include: {
           account: true, 
+          product: true,
           cart: {
             include: {
               product: {
