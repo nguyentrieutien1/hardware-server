@@ -11,6 +11,7 @@ import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { AccountModule } from './account/account.module';
 import { CategoriesModule } from './categories/categories.module';
+import { PostsModule } from './posts/posts.module';
 import session from 'express-session';
 
 @Module({
@@ -23,6 +24,7 @@ import session from 'express-session';
     OrderModule,
     AccountModule,
     CategoriesModule,
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -6,16 +6,39 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  Request,
+  Req,
+  UploadedFile,
+  Res,
 } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { UpdateUploadDto } from './dto/update-upload.dto';
 import { CreateUploadDto } from './dto/create-upload.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import  formidable from 'formidable';
+
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
   @Post()
-  create(@Body() createUploadDto: CreateUploadDto[]) {
+  @UseInterceptors(
+    FileInterceptor('upload', {
+      storage: diskStorage({
+        destination: './uploads', // Thư mục lưu trữ tệp
+        filename: (req, file, callback) => {
+          const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          callback(null, uniqueName + extname(file.originalname));
+        },
+      }),
+    })
+  )
+  async uploadFile(@UploadedFile() file) {
+    return `http://localhost:5000/api/upload/${file.filename}`
+   
   }
 
   @Get()
@@ -23,9 +46,9 @@ export class UploadController {
     return this.uploadService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.uploadService.findOne(+id);
+  @Get(':filename')
+  serveImage(@Param('filename') filename: string, @Res() res: any) {
+    return res.sendFile(filename, { root: 'uploads/' });
   }
 
   @Patch(':id')
