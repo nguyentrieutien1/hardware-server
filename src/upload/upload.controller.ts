@@ -37,6 +37,10 @@ export class UploadController {
     })
   )
   async uploadFile(@UploadedFile() file) {
+    console.log("nguyenthanhtung");
+    console.log(process.env.NODE_ENV);
+    
+    
     return `${process.env.NODE_ENV === 'development' ? 'https://maytinhthunguyen.com' : 'http://localhost:5000'}/api/upload/${file.filename}`
    
   }
