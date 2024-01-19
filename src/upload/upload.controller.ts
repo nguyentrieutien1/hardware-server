@@ -37,7 +37,7 @@ export class UploadController {
     })
   )
   async uploadFile(@UploadedFile() file) {
-    return `http://localhost:5000/api/upload/${file.filename}`
+    return `${process.env.NODE_ENV === 'development' ? 'https://maytinhthunguyen.com' : 'http://localhost:5000'}/api/upload/${file.filename}`
    
   }
 
