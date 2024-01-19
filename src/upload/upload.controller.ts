@@ -18,11 +18,11 @@ import { CreateUploadDto } from './dto/create-upload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import  formidable from 'formidable';
+import formidable from 'formidable';
 
 @Controller('upload')
 export class UploadController {
-  constructor(private readonly uploadService: UploadService) {}
+  constructor(private readonly uploadService: UploadService) { }
 
   @Post()
   @UseInterceptors(
@@ -39,10 +39,10 @@ export class UploadController {
   async uploadFile(@UploadedFile() file) {
     console.log("nguyenthanhtung");
     console.log(process.env.NODE_ENV);
-    
-    
-    return `${process.env.NODE_ENV === 'development' ? 'https://maytinhthunguyen.com' : 'http://localhost:5000'}/api/upload/${file.filename}`
-   
+
+
+    return `${process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://maytinhthunguyen.com'}/api/upload/${file.filename}`
+
   }
 
   @Get()
