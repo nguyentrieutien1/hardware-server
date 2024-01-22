@@ -53,6 +53,9 @@ model Image {
   Product   Product? @relation(fields: [productId], references: [id])
   Post      Post?    @relation(fields: [postId], references: [id])
   postId    Int?
+  name     String?
+  size     Int?
+  type     String?
 
   @@map(name: "image")
 }

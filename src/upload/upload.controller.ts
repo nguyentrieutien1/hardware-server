@@ -11,11 +11,12 @@ import {
   Req,
   UploadedFile,
   Res,
+  UploadedFiles,
 } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { UpdateUploadDto } from './dto/update-upload.dto';
 import { CreateUploadDto } from './dto/create-upload.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import formidable from 'formidable';
@@ -24,9 +25,9 @@ import formidable from 'formidable';
 export class UploadController {
   constructor(private readonly uploadService: UploadService) { }
 
-  @Post()
+  @Post('')
   @UseInterceptors(
-    FileInterceptor('upload', {
+    FilesInterceptor('file', null, {
       storage: diskStorage({
         destination: './uploads', // Thư mục lưu trữ tệp
         filename: (req, file, callback) => {
@@ -36,13 +37,13 @@ export class UploadController {
       }),
     })
   )
-  async uploadFile(@UploadedFile() file) {
-    console.log("nguyenthanhtung");
-    console.log(process.env.NODE_ENV);
-
-
-    return `${process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://maytinhthunguyen.com'}/api/upload/${file.filename}`
-
+  async uploadFiles(@UploadedFiles() files) {
+    const fileUrls = files.map(file => {
+      return {
+        url:  `${process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://maytinhthunguyen.com'}/api/upload/${file.filename}`,
+      };
+    });
+    return fileUrls;
   }
 
   @Get()

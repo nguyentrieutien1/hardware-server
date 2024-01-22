@@ -30,7 +30,6 @@ export class ProductController {
   @Roles(['SUPER_ADMIN'])
   @Put(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    console.log(+id, updateProductDto);
     return this.productService.update(+id, updateProductDto);
   }
   @UseGuards(AuthGuard)
