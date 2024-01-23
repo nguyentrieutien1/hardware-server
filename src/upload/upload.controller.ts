@@ -40,7 +40,7 @@ export class UploadController {
   async uploadFiles(@UploadedFiles() files) {
     const fileUrls = files.map(file => {
       return {
-        url:  `https://maytinhthunguyen.com/api/upload/${file.filename}`,
+        url:  `${process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://maytinhthunguyen.com'}/api/upload/${file.filename}`,
       };
     });
     return fileUrls;
