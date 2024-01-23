@@ -12,7 +12,6 @@ import { OrderModule } from './order/order.module';
 import { AccountModule } from './account/account.module';
 import { CategoriesModule } from './categories/categories.module';
 import { PostsModule } from './posts/posts.module';
-import session from 'express-session';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -27,8 +26,9 @@ import { ConfigModule } from '@nestjs/config';
     CategoriesModule,
     PostsModule,
     ConfigModule.forRoot({
-      envFilePath: '.env',
-    }),
+      isGlobal: true,
+      envFilePath: ['.env', '.env.production'],
+    })
   ],
   controllers: [AppController],
   providers: [
