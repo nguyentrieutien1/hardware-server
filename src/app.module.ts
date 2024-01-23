@@ -13,6 +13,7 @@ import { AccountModule } from './account/account.module';
 import { CategoriesModule } from './categories/categories.module';
 import { PostsModule } from './posts/posts.module';
 import session from 'express-session';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -25,6 +26,9 @@ import session from 'express-session';
     AccountModule,
     CategoriesModule,
     PostsModule,
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
   ],
   controllers: [AppController],
   providers: [
@@ -35,4 +39,4 @@ import session from 'express-session';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
