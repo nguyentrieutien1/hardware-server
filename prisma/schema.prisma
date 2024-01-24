@@ -73,7 +73,7 @@ model Role {
 model Product {
   id           Int         @id @default(autoincrement())
   name         String?
-  description  String?
+  description  Json?
   price        Int?
   images       Image[]
   cart         Cart[]
