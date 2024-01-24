@@ -3,7 +3,7 @@ export class CreateProductDto {
     @IsNotEmpty()
     name: string;
     @IsNotEmpty()
-    description: string;
+    description: any;
     @IsNotEmpty()
     price: number;
     stock: number;
