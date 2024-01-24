@@ -15,7 +15,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
   async register(createAccountDto: CreateAccountDto) {
     try {
       const { email, password } = createAccountDto;
@@ -32,10 +32,18 @@ export class AuthService {
       const hashPassword = await bcrypt.hash(password, saltOrRounds);
       createAccountDto.password = hashPassword;
       delete createAccountDto.confirmPassword;
-      return await this.prisma.account.create({
+      const account = await this.prisma.account.create({
         data: createAccountDto,
         include: { role: true },
       });
+
+       await this.prisma.image.create({
+        data: {
+          accountId: account.id,
+          url: account.sex === 'male' ? 'https://files.tecnoblog.net/wp-content/uploads/2020/05/avatar-de-facebook-de-mark-zuckerberg-e1589902366337-700x460.png' : 'https://www.pvm.vn/wp-content/uploads/2020/09/facebook-avatar.jpg'
+        }
+      });
+      return account;
     } catch (error) {
       throw new BadRequestException(error);
     }
@@ -48,7 +56,7 @@ export class AuthService {
       include: { role: true },
     });
     return {
-      access_token: this.jwtService.sign(payload, {expiresIn: '1d', secret: jwtConstants.secret}),
+      access_token: this.jwtService.sign(payload, { expiresIn: '1d', secret: jwtConstants.secret }),
       role: account.role,
     };
   }
@@ -126,7 +134,7 @@ export class AuthService {
       });
     } catch (error) {
       console.log(error);
-      
+
       throw new BadRequestException('Cookie has expired');
     }
   }
