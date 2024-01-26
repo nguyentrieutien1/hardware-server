@@ -6,10 +6,11 @@ import { PrismaService } from 'prisma/prisma.service';
 export class OrderService {
   constructor(private prismaService: PrismaService) { }
   async create(createOrderDto: any) {
-    const timestamp = Date.now(); // Lấy timestamp hiện tại
-    const randomValue = Math.floor(Math.random() * 1000); // Giá trị ngẫu nhiên
-    const orderCode = `ORD-${timestamp}-${randomValue}`;
+
     const newOrder = createOrderDto.map(order => {
+      const timestamp = Date.now(); // Lấy timestamp hiện tại
+      const randomValue = Math.floor(Math.random() * 1000); // Giá trị ngẫu nhiên
+      const orderCode = `ORD-${timestamp}-${randomValue}`;
       order.orderCode = orderCode
       return order;
     })
@@ -54,7 +55,7 @@ export class OrderService {
         where: { id },
         data: { statusId: updateOrderDto?.statusId },
         include: {
-          account: true, 
+          account: true,
           product: true,
           cart: {
             include: {
@@ -69,13 +70,33 @@ export class OrderService {
         }
       });
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
+
       throw new BadRequestException(error);
     }
   }
 
   remove(id: number) {
     return `This action removes a #${id} order`;
+  }
+  async search(data) {
+    if (data?.orderCode) {
+      const orderProduct = await this.prismaService.order.findFirst({
+        where: {
+          orderCode: data?.orderCode
+        },
+        include: {
+          status: true
+        }
+
+      })
+      if (orderProduct) {
+        return orderProduct
+      }
+      else {
+
+      }
+    }
+
   }
 }

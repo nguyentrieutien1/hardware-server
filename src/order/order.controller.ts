@@ -24,6 +24,13 @@ export class OrderController {
     return this.orderService.create(createOrderDto);
   }
 
+  @Post('/search')
+  // @UseGuards(AuthGuard)
+  search(@Body() searchOrderDto: any) {
+    return this.orderService.search(searchOrderDto);
+  }
+
+
   @Get()
   findAll() {
     return this.orderService.findAll();
