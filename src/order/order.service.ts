@@ -100,7 +100,8 @@ export class OrderService {
             orderCode: data?.orderCode,
           },
           include: {
-            status: true
+            status: true,
+            
           }
         })
         return orderRepair

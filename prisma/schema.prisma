@@ -144,7 +144,7 @@ model Repair {
   note           String?
   expirationDate String?
   orderCode      String?
-
+  price          String?
   @@map(name: "repair")
 }
 
