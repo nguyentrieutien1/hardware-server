@@ -13,6 +13,7 @@ import { AccountModule } from './account/account.module';
 import { CategoriesModule } from './categories/categories.module';
 import { PostsModule } from './posts/posts.module';
 import { ConfigModule } from '@nestjs/config';
+import { RepairModule } from './repair/repair.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env', '.env.production'],
-    })
+    }),
+    RepairModule
   ],
   controllers: [AppController],
   providers: [

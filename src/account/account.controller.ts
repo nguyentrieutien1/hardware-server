@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
@@ -7,10 +7,13 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
- 
+  @Get()
+  async getAll(@Query() params: any) {
+    return await this.accountService.getAll(params)
+  }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountService.update(+id, updateAccountDto);
+  async update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
+    return await this.accountService.update(+id, updateAccountDto);
   }
 }

@@ -86,7 +86,8 @@ export class OrderService {
           orderCode: data?.orderCode
         },
         include: {
-          status: true
+          status: true,
+          product: true,
         }
 
       })
@@ -94,7 +95,15 @@ export class OrderService {
         return orderProduct
       }
       else {
-
+        const orderRepair = await this.prismaService.repair.findFirst({
+          where: {
+            orderCode: data?.orderCode,
+          },
+          include: {
+            status: true
+          }
+        })
+        return orderRepair
       }
     }
 

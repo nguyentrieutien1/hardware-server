@@ -22,4 +22,12 @@ export class AccountService {
     accountUpdated.image =  image
     return accountUpdated;
   }
+  async getAll(params) {
+    try {
+      
+    return this.prismaService.account.findMany({where: {roleId: +params?.roleId}})
+    } catch (error) {
+      return error
+    }
+  }
 }

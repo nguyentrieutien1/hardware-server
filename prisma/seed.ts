@@ -15,6 +15,7 @@ async function createRoleStatusData() {
       { name: 'PRODUCT_ORDERED' },
       { name: 'ORDER_CANCELED' },
       { name: 'ORDER_ACCEPTED' },
+      { name: 'ORDER_COMPLETED' },
     ],
   });
 }
